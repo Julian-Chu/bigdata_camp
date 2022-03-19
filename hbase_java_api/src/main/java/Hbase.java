@@ -7,6 +7,7 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Hbase {
@@ -28,24 +29,37 @@ public class Hbase {
         }
 
         TableName tableName = TableName.valueOf(myNamespace,"student");
-        String colFamily = "info";
-        String rowKey = "Tom";
+        String colFamilyInfo = "info";
+        String colFamilyScore = "score";
 
         if (admin.tableExists(tableName)) {
             System.out.println("Table already exists");
         }else{
             HTableDescriptor hTableDescriptor = new HTableDescriptor(tableName);
-            HColumnDescriptor hColumnDescriptor = new HColumnDescriptor(colFamily);
-            hTableDescriptor.addFamily(hColumnDescriptor);
+            HColumnDescriptor hColumnDescriptorInfo = new HColumnDescriptor(colFamilyInfo);
+            HColumnDescriptor hColumnDescriptorScore = new HColumnDescriptor(colFamilyScore);
+            hTableDescriptor.addFamily(hColumnDescriptorInfo);
+            hTableDescriptor.addFamily(hColumnDescriptorScore);
             admin.createTable(hTableDescriptor);
             System.out.println("Table create successful");
         }
 
-        Put put = new Put(Bytes.toBytes(rowKey));
-        put.addColumn(Bytes.toBytes(colFamily), Bytes.toBytes("student_id"), Bytes.toBytes("20210000000001"));
-        put.addColumn(Bytes.toBytes(colFamily), Bytes.toBytes("class"), Bytes.toBytes("1"));
-        connection.getTable(tableName).put(put);
-        System.out.println("Data insert success");
+        ArrayList<Student> students = new ArrayList<>();
+        students.add(new Student("Tom", "20210000000001", "1", "75", "82"));
+        students.add(new Student("Jerry", "20210000000002", "1", "85", "67"));
+        students.add(new Student("Jack", "20210000000003", "2", "80", "80"));
+        students.add(new Student("Rose", "20210000000004", "2", "60", "61"));
+        students.add(new Student("JulianChu", "G20210607020225", "3", "60", "61"));
+        int count = 0;
+        for (Student student : students) {
+            String rowKey = student.getName();
+            Put put = new Put(Bytes.toBytes(rowKey));
+            put.addColumn(Bytes.toBytes(colFamilyInfo), Bytes.toBytes("student_id"), Bytes.toBytes("20210000000001"));
+            put.addColumn(Bytes.toBytes(colFamilyInfo), Bytes.toBytes("class"), Bytes.toBytes("1"));
+            connection.getTable(tableName).put(put);
+            count++;
+        }
+        System.out.println(count+" rows insert success");
     }
 }
 
