@@ -13,13 +13,18 @@ import java.util.Arrays;
 public class Hbase {
     public static void main(String[] args) throws IOException {
         Configuration configuration = HBaseConfiguration.create();
+        /// local docker
         configuration.set("hbase.zookeeper.quorum", "127.0.0.1");
-        configuration.set("hbase.zookeeper.property.clientPort", "2181");
         configuration.set("hbase.master", "127.0.0.1:16000");
+
+        /// remote server
+//        configuration.set("hbase.zookeeper.quorum", "emr-header-1,emr-worker-1,emr-worker-2");
+
+        configuration.set("hbase.zookeeper.property.clientPort", "2181");
         Connection connection = ConnectionFactory.createConnection(configuration);
         Admin admin = connection.getAdmin();
-        String myNamespace = "julianchu";
 
+        String myNamespace = "julianchu";
         NamespaceDescriptor nsDesc = NamespaceDescriptor.create(myNamespace).build();
         NamespaceDescriptor[] namespaceDescriptors = admin.listNamespaceDescriptors();
         if(Arrays.stream(namespaceDescriptors).noneMatch(desc-> desc.getName().equals(nsDesc.getName()))){
