@@ -1,1 +1,1 @@
-CREATE SCHEMA julianchu;
+CREATE SCHEMA IF NOT EXISTS julianchu;
