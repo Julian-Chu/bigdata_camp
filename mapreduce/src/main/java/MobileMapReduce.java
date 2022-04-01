@@ -18,14 +18,17 @@ public class MobileMapReduce {
 
         public void map(LongWritable key, Text value, Context context
         ) throws IOException, InterruptedException {
-            String line = value.toString();
-            String[] fields = StringUtils.split(line, "\t");
+            String[] lines = value.toString().split("\t");
+            if(lines.length<10) return;
 
-            String phone = fields[1];
-            long upstream = Long.parseLong(fields[7]);
-            long downstream = Long.parseLong(fields[8]);
-
-            context.write(new Text(phone), new Mobile(phone, upstream, downstream));
+            String phone = lines[1];
+            try {
+                long upstream = Long.parseLong(lines[7]);
+                long downstream = Long.parseLong(lines[8]);
+                context.write(new Text(phone), new Mobile(phone, upstream, downstream));
+            } catch (NumberFormatException e) {
+                System.err.println("parseLing failed" + e.getMessage());
+            }
         }
     }
 
