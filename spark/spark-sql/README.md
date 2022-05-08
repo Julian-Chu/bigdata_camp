@@ -141,7 +141,7 @@ LEFT ANTI JOIN (SELECT b1, b2, 1.0 b3 FROM t2 WHERE b2 = 10) on  a1<=>b1, a2<=>b
 ```
 
 `SELECT a1, a2, 'custom' FROM ( SELECT * FROM t1 WHERE a2 = 10 AND true AND a1 > 5 ) LEFT ANTI JOIN (SELECT b1, b2, 1.0 b3 FROM t2 WHERE b2 = 10) on a1<=>b1, a2<=>b2, false GROUP BY a1, a2, 'custom`
-## Homework3
+## Homework3: customized optimization
 [source code](../spark-sql-extension)
 
 `spark-sql --jars ./out/artifacts/spark_sql_extension_jar/spark-sql-extension.jar --conf spark.sql.extensions=MySparkSessionExtension`
