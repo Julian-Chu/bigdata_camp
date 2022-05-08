@@ -1,0 +1,4 @@
+  { "ID": 1, "Name": "Max", "Amount": 1.23, "Age": 20 },
+  { "ID": 2, "Name": "John", "Amount": 200.00, "Age": 15 },
+  { "ID": 3, "Name": "Mary", "Amount": 106.00, "Age": 30 },
+  { "ID": 4, "Name": "Ada", "Amount": 22.00, "Age": 18 }
